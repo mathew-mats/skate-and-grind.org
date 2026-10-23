@@ -172,9 +172,16 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
     border-color: var(--accent-red);
     box-shadow: 0 10px 30px rgba(229, 57, 53, 0.15);
 }
-.skate-card img {
+/* .skate-card img {
     border-radius: 0;
     height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+} */
+
+.skate-card img {
+    border-radius: 0;
+    height: 380px;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
