@@ -181,8 +181,8 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
 
 .skate-card img {
     border-radius: 0;
-    height: 380px;
-    object-fit: cover;
+    height: 500px;
+    object-fit:cover;
     transition: transform 0.5s ease;
 }
 .skate-card:hover img {
@@ -195,17 +195,28 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
 /* Image Collage */
 .img-collage {
     position: relative;
+    padding-bottom: 60px; /* space for the overlapping second image */
 }
-.img-collage img {
+
+.img-collage img:first-child {
+    width: 50%;
+    height: 400px;              /* fixed height — adjust if needed */
+    object-fit:contain;          /* crops instead of stretching */
+    object-position: center;    /* keeps the skater centered */
     border: 3px solid var(--primary-black);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
+
 .img-collage .img-2 {
     position: absolute;
-    bottom: -30px;
-    right: -30px;
-    width: 60%;
+    bottom: 0;
+    right: 0;
+    width: 65%;
+    height: 280px;              /* smaller than the main image */
+    object-fit: cover;
+    object-position: center;
     border: 3px solid var(--accent-red);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 /* Footer */
