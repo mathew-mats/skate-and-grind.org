@@ -6,7 +6,7 @@
     --secondary-black: #141414;
     --primary-white: #FFFFFF;
     --accent-red: #E53935;
-    --text-grey: #D1D1D1; /* Brightened from #A0A0A0 for better readability */
+    --text-grey: #D1D1D1;
 }
 
 body {
@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
     letter-spacing: 1px;
 }
 
-/* Navbar */
+/* ============ NAVBAR ============ */
 .navbar {
     background-color: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(10px);
@@ -47,7 +47,7 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
     color: var(--accent-red) !important;
 }
 
-/* Buttons */
+/* ============ BUTTONS ============ */
 .btn-skate {
     background-color: var(--accent-red);
     color: var(--primary-white);
@@ -83,13 +83,12 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
     transform: translateY(-2px);
 }
 
-/* Hero Section */
+/* ============ HERO SECTION ============ */
 .hero-section {
     min-height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
-    /* ✅ New — balanced, image shows through */
     background: linear-gradient(rgba(10, 10, 10, 0.55), rgba(10, 10, 10, 0.75)), url('../images/hero-bg.jpg') center/cover no-repeat;
     padding-top: 80px;
 }
@@ -97,17 +96,17 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
     font-size: clamp(3.5rem, 12vw, 9rem);
     line-height: 0.9;
     margin-bottom: 20px;
-    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8); /* Stronger shadow */
+    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
 }
 .hero-title span {
     color: var(--accent-red);
     -webkit-text-stroke: 2px var(--primary-white);
 }
 .hero-section p {
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9); /* Added shadow for readability */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
 }
 
-/* Marquee Ticker */
+/* ============ MARQUEE TICKER ============ */
 .marquee {
     background-color: var(--accent-red);
     color: var(--primary-white);
@@ -133,57 +132,111 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
     100% { transform: translateX(-50%); }
 }
 
-/* Section Styling */
+/* ============ SECTION STYLING ============ */
 .section-padding {
     padding: 100px 0;
+    overflow: hidden; /* Prevent fixed backgrounds from overflowing */
 }
 .section-title {
     font-size: 2.8rem;
     margin-bottom: 20px;
     position: relative;
     display: inline-block;
+    max-width: 100%;
+    word-wrap: break-word;
 }
 .section-title::after {
     content: '';
     position: absolute;
     bottom: -10px;
     left: 0;
-    width: 60px;
+    width: 0;
     height: 4px;
     background-color: var(--accent-red);
+    transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.section-title.revealed::after,
+.section-title:hover::after {
+    width: 60px;
 }
 
-/* Override Bootstrap's default muted text for better contrast on dark backgrounds */
+/* Override Bootstrap's muted text */
 .text-muted {
     color: var(--text-grey) !important;
 }
 
-/* Cards */
+/* ============ CARDS (FIXED FOR PORTRAIT IMAGES) ============ */
 .skate-card {
     background-color: var(--secondary-black);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 0;
-    transition: all 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                border-color 0.3s ease,
+                box-shadow 0.4s ease;
     height: 100%;
     overflow: hidden;
+    position: relative;
 }
 .skate-card:hover {
     transform: translateY(-8px);
     border-color: var(--accent-red);
     box-shadow: 0 10px 30px rgba(229, 57, 53, 0.15);
 }
-/* .skate-card img {
-    border-radius: 0;
-    height: 250px;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-} */
+.skate-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--accent-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: 2;
+}
+.skate-card:hover::before {
+    transform: scaleX(1);
+}
+/* New Wrapper for the blurred effect */
+.card-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 380px; /* Adjust height if needed */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+}
 
-.skate-card img {
-    border-radius: 0;
-    height: 500px;
-    object-fit:cover;
+/* The blurred background layer */
+.card-img-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    filter: blur(20px) brightness(0.4); /* Blurs and darkens the image */
+    z-index: 1;
+}
+
+/* The actual sharp image */
+.card-img-wrapper img {
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Shows full image */
+    background-color: transparent !important; /* Removes the black background */
     transition: transform 0.5s ease;
+}
+
+.skate-card:hover .card-img-wrapper img {
+    transform: scale(1.05);
 }
 .skate-card:hover img {
     transform: scale(1.05);
@@ -192,34 +245,38 @@ h1, h2, h3, h4, h5, h6, .display-1, .display-2 {
     padding: 25px;
 }
 
-/* Image Collage */
+/* ============ IMAGE COLLAGE (FIXED FOR PORTRAIT) ============ */
 .img-collage {
     position: relative;
-    padding-bottom: 60px; /* space for the overlapping second image */
+    padding-bottom: 60px;
 }
-
 .img-collage img:first-child {
-    width: 50%;
-    height: 400px;              /* fixed height — adjust if needed */
-    object-fit:contain;          /* crops instead of stretching */
-    object-position: center;    /* keeps the skater centered */
+    width: 100%;
+    height: auto;                 /* Natural height, no cropping */
+    object-fit: contain;
     border: 3px solid var(--primary-black);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: block;
+    animation: floatY 6s ease-in-out infinite;
 }
-
 .img-collage .img-2 {
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 65%;
-    height: 280px;              /* smaller than the main image */
-    object-fit: cover;
-    object-position: center;
+    width: 55%;
+    height: auto;
+    object-fit: contain;
     border: 3px solid var(--accent-red);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background-color: #000;
+    animation: floatY 6s ease-in-out infinite 1s;
+}
+@keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
-/* Footer */
+/* ============ FOOTER ============ */
 footer {
     background-color: #050505;
     padding: 80px 0 30px;
@@ -250,35 +307,7 @@ footer a:hover {
     transform: translateY(-3px);
 }
 
-/* Animations */
-.fade-in-up {
-    animation: fadeInUp 1s ease forwards;
-    opacity: 0;
-    transform: translateY(30px);
-}
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Mobile Responsiveness for Image Collage */
-@media (max-width: 767.98px) {
-    .img-collage .img-2 {
-        position: relative;
-        bottom: auto;
-        right: auto;
-        width: 100%;
-        margin-top: 15px;
-        border: 3px solid var(--accent-red);
-    }
-    .img-collage img {
-        margin-bottom: 0;
-    }
-}
-
-/* Gallery Grid */
+/* ============ GALLERY GRID (FIXED FOR PORTRAIT) ============ */
 .gallery-item {
     position: relative;
     overflow: hidden;
@@ -288,7 +317,8 @@ footer a:hover {
 .gallery-item img {
     width: 100%;
     height: 300px;
-    object-fit: cover;
+    object-fit: contain;          /* Shows full image */
+    background-color: #000;       /* Blends with theme */
     transition: transform 0.5s ease;
 }
 .gallery-item:hover img {
@@ -320,7 +350,7 @@ footer a:hover {
     transform: translateY(0);
 }
 
-/* Enhanced Lightbox */
+/* ============ LIGHTBOX ============ */
 #lightboxModal .modal-content {
     background-color: rgba(10, 10, 10, 0.95);
     border: none;
@@ -335,7 +365,7 @@ footer a:hover {
 #lightboxImage {
     max-width: 100%;
     max-height: 80vh;
-    object-fit: contain; /* Prevents stretching or cropping */
+    object-fit: contain;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -376,13 +406,8 @@ footer a:hover {
     border-radius: 20px;
     letter-spacing: 1px;
 }
-@media (max-width: 768px) {
-    .lightbox-nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
-    .lightbox-prev { left: 5px; }
-    .lightbox-next { right: 5px; }
-}
 
-/* ===== CUSTOM LIGHTBOX (Mobile-First) ===== */
+/* ============ CUSTOM LIGHTBOX ============ */
 .custom-lightbox {
     position: fixed;
     top: 0;
@@ -504,24 +529,7 @@ footer a:hover {
     letter-spacing: 2px;
 }
 
-/* Small phone tweaks */
-@media (max-width: 576px) {
-    .custom-lightbox img {
-        max-width: 100%;
-        max-height: 70vh;
-    }
-    .custom-lightbox .lightbox-nav-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 1.1rem;
-    }
-    .custom-lightbox .lightbox-prev { left: 5px; }
-    .custom-lightbox .lightbox-next { right: 5px; }
-    .lightbox-info { bottom: 10px; padding: 0 50px; }
-    .lightbox-info h5 { font-size: 0.95rem; }
-}
-
-/* ===== GLOBAL OVERFLOW FIX ===== */
+/* ============ GLOBAL OVERFLOW FIX ============ */
 html {
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -534,44 +542,6 @@ body {
 img, video, iframe {
     max-width: 100%;
     height: auto;
-}
-
-/* Fix the About page image collage on mobile */
-@media (max-width: 991.98px) {
-    .img-collage {
-        margin-bottom: 40px;
-        padding-right: 20px;
-    }
-    .img-collage .img-2 {
-        position: relative;
-        bottom: auto;
-        right: auto;
-        width: 100%;
-        margin-top: 15px;
-        border: 3px solid var(--accent-red);
-    }
-}
-
-/* Prevent huge hero titles from overflowing on tiny phones */
-@media (max-width: 400px) {
-    .hero-title {
-        font-size: 2.5rem !important;
-        word-break: break-word;
-    }
-    .section-title {
-        font-size: 1.8rem;
-    }
-}
-
-/* Make sure the section title underline doesn't push the layout */
-.section-title {
-    max-width: 100%;
-    word-wrap: break-word;
-}
-
-/* Prevent the fixed CTA section backgrounds from overflowing */
-.section-padding {
-    overflow: hidden;
 }
 
 /* ============ SCROLL REVEAL ANIMATIONS ============ */
@@ -661,53 +631,6 @@ img, video, iframe {
     left: 100%;
 }
 
-/* ============ SECTION TITLE UNDERLINE ANIMATION ============ */
-.section-title::after {
-    transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    width: 0;
-}
-.section-title.revealed::after,
-.section-title:hover::after {
-    width: 60px;
-}
-
-/* ============ CARD ENHANCED HOVER ============ */
-.skate-card {
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                border-color 0.3s ease,
-                box-shadow 0.4s ease;
-}
-.skate-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--accent-red);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-}
-.skate-card {
-    position: relative;
-}
-.skate-card:hover::before {
-    transform: scaleX(1);
-}
-
-/* ============ IMAGE COLLAGE FLOAT ============ */
-.img-collage img:first-child {
-    animation: floatY 6s ease-in-out infinite;
-}
-.img-collage .img-2 {
-    animation: floatY 6s ease-in-out infinite 1s;
-}
-@keyframes floatY {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
 /* ============ BACK TO TOP BUTTON ============ */
 #backToTop {
     position: fixed;
@@ -740,15 +663,6 @@ img, video, iframe {
     color: var(--accent-red);
     transform: translateY(-4px);
 }
-@media (max-width: 576px) {
-    #backToTop {
-        bottom: 15px;
-        right: 15px;
-        width: 42px;
-        height: 42px;
-        font-size: 1.1rem;
-    }
-}
 
 /* ============ NAVBAR LINK UNDERLINE ============ */
 .navbar .nav-link {
@@ -773,6 +687,77 @@ img, video, iframe {
 /* ============ MARQUEE PAUSE ON HOVER ============ */
 .marquee:hover .marquee-content {
     animation-play-state: paused;
+}
+
+/* ============ MOBILE RESPONSIVENESS ============ */
+@media (max-width: 991.98px) {
+    /* Collage stacks properly */
+    .img-collage {
+        margin-bottom: 40px;
+        padding-right: 0;
+        padding-bottom: 0;
+    }
+    .img-collage .img-2 {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        width: 100%;
+        margin-top: 15px;
+        border: 3px solid var(--accent-red);
+    }
+    /* Slightly shorter cards on tablets */
+    .skate-card img {
+        height: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .lightbox-nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+    .lightbox-prev { left: 5px; }
+    .lightbox-next { right: 5px; }
+}
+
+@media (max-width: 576px) {
+    /* Smaller back-to-top button */
+    #backToTop {
+        bottom: 15px;
+        right: 15px;
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+    /* Shorter program cards on phones */
+    .skate-card img {
+        height: 280px;
+    }
+    /* Shorter gallery tiles on phones */
+    .gallery-item img {
+        height: 220px;
+    }
+    /* Custom Lightbox tweaks */
+    .custom-lightbox img {
+        max-width: 100%;
+        max-height: 70vh;
+    }
+    .custom-lightbox .lightbox-nav-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+    .custom-lightbox .lightbox-prev { left: 5px; }
+    .custom-lightbox .lightbox-next { right: 5px; }
+    .lightbox-info { bottom: 10px; padding: 0 50px; }
+    .lightbox-info h5 { font-size: 0.95rem; }
+}
+
+@media (max-width: 400px) {
+    .hero-title {
+        font-size: 2.5rem !important;
+        word-break: break-word;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
 }
 
 /* ============ REDUCED MOTION SUPPORT ============ */
