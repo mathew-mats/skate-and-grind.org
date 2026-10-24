@@ -728,7 +728,7 @@ img, video, iframe {
     }
     /* Shorter program cards on phones */
     .skate-card img {
-        height: 280px;
+        height: 400px;
     }
     /* Shorter gallery tiles on phones */
     .gallery-item img {
